@@ -19,6 +19,7 @@
 
 # production
 /build
+sampleData.jsonl
 
 # misc
 .DS_Store
