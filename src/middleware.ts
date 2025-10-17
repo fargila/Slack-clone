@@ -16,7 +16,8 @@ export default convexAuthNextjsMiddleware((request) => {
   // if (isPublicPage(request)) {
   //   return nextjsMiddlewareRedirect(request, "/")
   }
-});
+//}
+);
 
 export const config = {
   matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
