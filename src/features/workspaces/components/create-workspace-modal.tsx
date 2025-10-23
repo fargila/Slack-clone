@@ -7,27 +7,34 @@ import { Input } from "@/components/ui/input"
 import { 
     Dialog,
     DialogContent,
-    DialogDescription,
     DialogHeader,
     DialogTitle
 } from "@/components/ui/dialog"
+import React, { useState } from "react"
+import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 export const CreateWorkspaceModal = ()=> {
-    const [open, setOpen] = useCreateWorkspaceModal()    
+    const router = useRouter()
 
-    const { mutate } = useCreateWorkspace()
+    const [open, setOpen] = useCreateWorkspaceModal()
+    const [name, setName] = useState("")
+
+    const { mutate, isPending } = useCreateWorkspace()
 
     const handleClose = ()=> {
         setOpen(false)
+        setName("")
     }
 
-    const handleSubmit = async ()=> {
-        const data = await mutate({
-            name: "Workspace 1",
-        }, 
-        {
-            onSuccess(data) {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>)=> {
+        e.preventDefault()
 
+        mutate({ name }, {
+            onSuccess(id) {
+                toast.success("Workspace created")
+                router.push(`/workspace/${id}`)
+                handleClose()
             }
         })
     }
@@ -38,17 +45,18 @@ export const CreateWorkspaceModal = ()=> {
                 <DialogHeader>
                     <DialogTitle>Add a workspace</DialogTitle>
                 </DialogHeader>
-                <form className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-4">
                     <Input
                     placeholder="Workspace name e.g. 'Work', 'Personal', 'Home'"
-                    disabled={false}
+                    onChange={(e)=> setName(e.target.value)}
+                    disabled={isPending}
                     minLength={3}
+                    value={name}
                     autoFocus
-                    value=""
                     required/>
 
                     <div className="flex justify-end">
-                        <Button disabled={false}>Create</Button>
+                        <Button disabled={isPending}>Create</Button>
                     </div>
                 </form>
             </DialogContent>

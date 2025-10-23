@@ -6,7 +6,9 @@ export const create = mutation({
     args: { name: v.string(), },
     handler: async (ctx, args)=> {
         const userId = await getAuthUserId(ctx)
-        if (!userId) { throw new Error("Unauthorized") }
+        if (!userId) { 
+            throw new Error("Unauthorized") 
+        }
 
         const joinCode = "123456"
         const workspaceId = await ctx.db.insert("workspaces", {
