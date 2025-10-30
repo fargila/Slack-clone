@@ -1,6 +1,6 @@
 import { convexAuthNextjsMiddleware, createRouteMatcher, isAuthenticatedNextjs, nextjsMiddlewareRedirect } from "@convex-dev/auth/nextjs/server";
 
-//Still not working
+//TODO: make the middleware redirect the user to /auth
 const isPublicPage = createRouteMatcher(["/auth"])
 
 export default convexAuthNextjsMiddleware((req)=> {

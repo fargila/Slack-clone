@@ -10,6 +10,7 @@ import {
 import { Doc } from "../../../../../convex/_generated/dataModel"
 import { ChevronDown, ListFilter, SquarePen } from "lucide-react"
 import { PreferencesModal } from "./preferences-modal"
+import { useState } from "react"
 
 interface WorkspaceHeaderProps {
     workspace: Doc<"workspaces">
@@ -17,10 +18,14 @@ interface WorkspaceHeaderProps {
 }
 
 export const WorkspaceHeader = ( {workspace, isAdmin }: WorkspaceHeaderProps)=> {
-    
+    const [preferencesOpen, setPreferencesOpen] = useState(false)
+
     return (
         <>
-            <PreferencesModal />
+            <PreferencesModal 
+            open={preferencesOpen} 
+            setOpen={setPreferencesOpen} 
+            initialValue={workspace.name}/>
             <div className="flex items-center justify-between px-4 h-[49px] gap-0.5">
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -30,7 +35,7 @@ export const WorkspaceHeader = ( {workspace, isAdmin }: WorkspaceHeaderProps)=> 
                         </Button>
                     </DropdownMenuTrigger>
                     
-                    <DropdownMenuContent side="bottom" align="start" className="w-64">
+                    <DropdownMenuContent side="bottom" align="start" className="w-64 bg-white">
                         <DropdownMenuItem className="cursor-pointer capitalize">
                             <div className="size-9 relative overflow-hidden bg-gray-500 text-white font-semibold text-xl rounded-md flex items-center justify-center mr-2">
                                 { workspace.name.charAt(0).toUpperCase() }
@@ -42,7 +47,8 @@ export const WorkspaceHeader = ( {workspace, isAdmin }: WorkspaceHeaderProps)=> 
                             </div>
                         </DropdownMenuItem>
                         
-                        {isAdmin && (
+                        {/* TODO: this should be isAdmin  */}
+                        {true && (
                             <>
                                 <DropdownMenuSeparator />
 
@@ -52,7 +58,7 @@ export const WorkspaceHeader = ( {workspace, isAdmin }: WorkspaceHeaderProps)=> 
 
                                 <DropdownMenuSeparator />
 
-                                <DropdownMenuItem className="cursor-pointer py-2" onClick={()=> {}}>
+                                <DropdownMenuItem className="cursor-pointer py-2" onClick={()=> setPreferencesOpen(true)}>
                                 Preferences
                                 </DropdownMenuItem>
                             </>
