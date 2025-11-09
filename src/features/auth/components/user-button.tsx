@@ -31,7 +31,7 @@ export const UserButton = ()=> {
                     </AvatarFallback>
                 </Avatar>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="center" side="right" className="w-60">
+            <DropdownMenuContent align="center" side="right" className="bg-white w-60">
                 <DropdownMenuItem className="h-10" onClick={()=> signOut()}>
                     <LogOut className="size-4 mr-2"/>
                     Log out
