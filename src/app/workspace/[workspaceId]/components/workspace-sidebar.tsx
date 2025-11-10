@@ -6,6 +6,7 @@ import { WorkspaceHeader } from "./workspace-header"
 import { SideBarItem } from "./sidebar-item"
 import { UseGetChannels } from "@/features/channels/api/use-get-channels"
 import WorkspaceSection from "./workspace-section"
+import { useGetMembers } from "@/features/members/api/use-get-member"
 
 export const WorkspaceSidebar = ()=> {
     const workspaceId = useWorkspaceId()
@@ -13,6 +14,8 @@ export const WorkspaceSidebar = ()=> {
     const { data: member, isLoading: memberLoading } = useCurrentMember({ workspaceId })
     const { data: workspace, isLoading: workspaceLoading } = useGetWorkspace({ id: workspaceId })
     const { data: channels, isLoading: channelsLoading } = UseGetChannels({ workspaceId })
+    const { data: members, isLoading: membersLoading } = useGetMembers({ workspaceId })
+    
 
     if (workspaceLoading || memberLoading) {
         return(
@@ -44,20 +47,26 @@ export const WorkspaceSidebar = ()=> {
                 label="Drafts & Sent"
                 icon={SendHorizonal}
                 id="drafts"/>
-
-                <WorkspaceSection
-                label="Channels"
-                hint="New channel"
-                onNew={()=> {}}>
-                    { channels?.map((item)=> (
-                        <SideBarItem
-                        key={item._id}
-                        icon={HashIcon}
-                        label={item.name}
-                        id={item._id} />
-                    )) }
-                </WorkspaceSection>
             </div>
+
+            <WorkspaceSection
+            label="Channels"
+            hint="New channel"
+            onNew={()=> {}}>
+                { channels?.map((item)=> (
+                    <SideBarItem
+                    key={item._id}
+                    icon={HashIcon}
+                    label={item.name}
+                    id={item._id} />
+                )) }
+            </WorkspaceSection>
+
+            {members?.map((item)=> (
+                <div key={item._id}>
+                    { item.user.name }
+                </div>
+            ))}
         </div>
     )
 }
