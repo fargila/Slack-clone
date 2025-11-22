@@ -1,4 +1,4 @@
-import { useState } from "react"
+import React, { useState } from "react"
 
 import {
     Dialog,
@@ -10,10 +10,14 @@ import {
 import { useCreateChannelModal } from "../store/use-create-channel-modal"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { useCreateChannel } from "../api/use-create-channel"
+import { useWorkspaceId } from "@/hooks/use-workspace-id"
 
 export const CreateChannelModal = ()=> {
-    const [name, setName] = useState("")
+    const { mutate, isPending }  = useCreateChannel()
     const [open, setOpen] = useCreateChannelModal()
+    const workspaceId = useWorkspaceId()
+    const [name, setName] = useState("")
 
     const handleClose = ()=> {
         setName("")
@@ -25,16 +29,28 @@ export const CreateChannelModal = ()=> {
         setName(value)
     }
     
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>)=> {
+        e.preventDefault()
+        mutate(
+            { name, workspaceId },
+            {
+                onSuccess: (id)=> {
+                    handleClose()
+                }
+            }
+        )
+    }
+
     return (
         <Dialog open={open} onOpenChange={handleClose}>
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>Add a channel</DialogTitle>
                 </DialogHeader>
-                <form className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-4">
                     <Input
                     value={name}
-                    disabled={false}
+                    disabled={isPending}
                     onChange={handleChange}
                     required
                     autoFocus

@@ -8,7 +8,7 @@ import { UseGetChannels } from "@/features/channels/api/use-get-channels"
 import WorkspaceSection from "./workspace-section"
 import { useGetMembers } from "@/features/members/api/use-get-member"
 import { UserItem } from "./user-item"
-import { useCreateChannelModal } from "@/features/channels/api/store/use-create-channel-modal"
+import { useCreateChannelModal } from "@/features/channels/store/use-create-channel-modal"
 
 export const WorkspaceSidebar = ()=> {
     const workspaceId = useWorkspaceId()
